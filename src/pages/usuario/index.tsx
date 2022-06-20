@@ -37,8 +37,6 @@ export default function Usuario(props: interfProps) {
         })
             .then((res) => {
 
-
-                setUsuarios(res.data)
             }).catch((erro) => {
                 console.log(erro)
             })
@@ -89,7 +87,7 @@ export default function Usuario(props: interfProps) {
                                                 className='btn btn-primary'
                                                 onClick={() => {
                                                     // router.push('/usuario/' + element.id)
-                                                    router.push(`/usuario/${element.id}`)
+                                                    router.push(`/usuario/` + element.id)
 
                                                 }}
                                                 style={{

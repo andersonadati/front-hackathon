@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { parseCookies } from 'nookies';
+//import { parseCookies } from 'ookies';
 import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { Menu } from '../../components/Menu';
 import api from '../../services/request';
@@ -20,25 +20,28 @@ export default function Usuario(props: interfProps) {
     const [estaEditando, setEstaEditando] = useState(false);
 
     useEffect(() => {
-
         const idParam = Number(id);
+        //console.log(idParam)
+
 
         if (Number.isInteger(idParam)) {
 
 
-            api.get('/usuarios/' + idParam, {
+
+            api.get('/usuario/' + idParam, {
                 headers: {
                     'Authorization': 'Bearer ' + props.token
                 }
             }).then((res) => {
                 if (res.data) {
 
+
                     setEstaEditando(true);
 
                     refForm.current['nome'].value = res.data.nome
                     refForm.current['email'].value = res.data.email
                     refForm.current['telefone'].value = res.data.telefone
-                    refForm.current['tipo'].value = res.data.tipo
+                    refForm.current['cidade'].value = res.data.cidade
                     refForm.current['cpf'].value = res.data?.cpf || ''
                     refForm.current['endereco'].value = res.data?.endereco || ''
                     refForm.current['bairro'].value = res.data?.bairro || ''
@@ -50,7 +53,7 @@ export default function Usuario(props: interfProps) {
             })
         }
 
-    }, [])
+    }, [id])
 
     const submitForm = useCallback((e: FormEvent) => {
         e.preventDefault();
@@ -68,7 +71,7 @@ export default function Usuario(props: interfProps) {
 
             }
 
-            api.post('/usuario', obj, {
+            api.post('/usuario/cadastrar', obj, {
                 headers: {
                     'Authorization': 'Bearer ' + props.token
                 }
@@ -108,12 +111,12 @@ export default function Usuario(props: interfProps) {
             }
 
 
-            api.put('/usuarios/'+id, obj, {
+            api.put('/usuario/editar', obj, {
                 headers: {
                     'Authorization': 'Bearer ' + props.token
                 }
             }).then((res) => {
-                router.push('/usuario')
+                router.push('/usuarios')
             })
 
 
@@ -207,7 +210,7 @@ export default function Usuario(props: interfProps) {
                             className='form-control'
                             placeholder='Digite seu telefone'
                             id="telefone"
-                            required
+                            //required
                         />
                         <div className='invalid-feedback'>
                             Por favor digite seu telefone.
@@ -242,26 +245,19 @@ export default function Usuario(props: interfProps) {
                         className='col-md-6'
                     >
                         <label
-                            htmlFor='tipo'
+                            htmlFor='cidade'
                             className='form-label'
                         >
-                            Tipo
+                            Cidade
                         </label>
 
-                        <select
-                            required
-                            className='form-select'
-                            defaultValue={""}
-                            id='tipo'
-                        >
-                            <option value=''>Selecione o tipo</option>
-                            <option value='admin'>Admin</option>
-                            <option value='colaborador'>Colaborador</option>
-                        </select>
-                        <div className='invalid-feedback'>
-                            Por favor selecione o tipo.
-                        </div>
-
+                        <input
+                            type='text'
+                            className='form-control'
+                            placeholder='Digite sua cidade'
+                            id="cidade"
+                        // required
+                        />
                     </div>
 
                     <div
@@ -317,29 +313,6 @@ export default function Usuario(props: interfProps) {
                             id="numero"
                         // required
                         />
-                    </div>
-
-                    <div
-                        className='col-md-12'
-                    >
-                        <label
-                            htmlFor='senha'
-                            className='form-label'
-                        >
-                            Senha
-                        </label>
-                        <input
-                            type="password"
-                            className='form-control'
-                            placeholder='Digite sua senha'
-                            id="senha"
-                            required={!estaEditando}
-                        />
-                        <div
-                            className='invalid-feedback'
-                        >
-                            Por favor digite sua senha.
-                        </div>
                     </div>
                     <div
                         className='col-md-12'

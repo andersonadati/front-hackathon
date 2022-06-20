@@ -51,7 +51,7 @@ export const Menu = ({
                                     <li
                                         className="nav-item"
                                     >
-                                        <Link href={'/usuario'}>
+                                        <Link href={'/usuario/cadastrar'}>
                                             <a
                                                 className={`nav-link ${active === 'usuario' && 'active'}`}
 
@@ -65,7 +65,7 @@ export const Menu = ({
                                     <li
                                         className="nav-item"
                                     >
-                                        <Link href={'/usuario'}>
+                                        <Link href={'/pesquisa'}>
                                             <a
                                                 className={`nav-link ${active === 'usuario' && 'active'}`}
 
