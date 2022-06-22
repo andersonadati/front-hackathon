@@ -4,6 +4,8 @@ import { parseCookies } from 'nookies';
 import { useEffect, useState } from 'react';
 import { Menu } from '../../components/Menu';
 import api from '../../services/request';
+import { Model } from 'miragejs';
+
 interface interfProps {
     token?: string;
 }
@@ -20,6 +22,12 @@ interface interfUsuario {
     tipo: string,
 }
 
+
+
+function deletarUsuario() {
+
+}
+
 export default function Usuario(props: interfProps) {
 
     const router = useRouter();
@@ -29,13 +37,15 @@ export default function Usuario(props: interfProps) {
     useEffect(() => {
 
 
-        api.get('/usuarios', {
+        api.get('/usuario', {
             // headers (cabeçalhos)
             headers: {
                 'Authorization': 'Bearer ' + props.token
             }
         })
             .then((res) => {
+
+                setUsuarios(res.data)
 
             }).catch((erro) => {
                 console.log(erro)
@@ -81,7 +91,7 @@ export default function Usuario(props: interfProps) {
                                     <tr key={element.id}>
                                         <td>{element.id}</td>
                                         <td>{element.nome}</td>
-                                        <td>{element.email}</td>
+                                        <td>{element.bairro}</td>
                                         <td>
                                             <button
                                                 className='btn btn-primary'
@@ -98,7 +108,7 @@ export default function Usuario(props: interfProps) {
                                             </button>
                                             <button
                                                 className='btn btn-danger'
-                                                onClick={() => { }}
+                                                onClick={() => {deletarUsuario()}}
                                             >
                                                 Excluir
                                             </button>

@@ -111,12 +111,12 @@ export default function Usuario(props: interfProps) {
             }
 
 
-            api.put('/usuario/editar', obj, {
+            api.put('/usuario/'+id, obj, {
                 headers: {
                     'Authorization': 'Bearer ' + props.token
                 }
             }).then((res) => {
-                router.push('/usuarios')
+                router.push('/usuario')
             })
 
 

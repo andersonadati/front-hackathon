@@ -42,7 +42,7 @@ export const Menu = ({
                                                 className={`nav-link ${active === 'usuario' && 'active'}`}
 
                                             >
-                                                Listagem de Usuarios
+                                                Usuarios
                                             </a>
                                         </Link>
                                     </li>
@@ -70,7 +70,21 @@ export const Menu = ({
                                                 className={`nav-link ${active === 'usuario' && 'active'}`}
 
                                             >
-                                                Cadastro de Pesquisas
+                                                Pesquisas
+                                            </a>
+                                        </Link>
+                                    </li>
+                                }
+                                {
+                                    <li
+                                        className="nav-item"
+                                    >
+                                        <Link href={'/pesquisa/cadastrar'}>
+                                            <a
+                                                className={`nav-link ${active === 'usuario' && 'active'}`}
+
+                                            >
+                                                Cadastro de Pesquisa
                                             </a>
                                         </Link>
                                     </li>
