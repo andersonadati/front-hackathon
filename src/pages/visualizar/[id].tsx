@@ -1,15 +1,9 @@
-import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-//import { parseCookies } from 'ookies';
-import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { Menu } from '../../components/Menu';
 import api from '../../services/request';
 
-interface interfProps {
-    token?: string;
-}
-
-export default function Usuario(props: interfProps) {
+export default function Visualizar() {
 
     const router = useRouter();
 
@@ -17,26 +11,16 @@ export default function Usuario(props: interfProps) {
 
     const { id } = router.query;
 
-    const [estaEditando, setEstaEditando] = useState(false);
-
     useEffect(() => {
         const idParam = Number(id);
-        //console.log(idParam)
-
 
         if (Number.isInteger(idParam)) {
 
+            api.get('/visualizar/' + idParam, {
 
-
-            api.get('/usuario/' + idParam, {
-                headers: {
-                    'Authorization': 'Bearer ' + props.token
-                }
             }).then((res) => {
+                console.log("usuario : " + res.data)
                 if (res.data) {
-
-
-                    setEstaEditando(true);
 
                     refForm.current['nome'].value = res.data.nome
                     refForm.current['email'].value = res.data.email
@@ -55,94 +39,15 @@ export default function Usuario(props: interfProps) {
 
     }, [id])
 
-    const submitForm = useCallback((e: FormEvent) => {
-        e.preventDefault();
-
-        if (refForm.current.checkValidity()) {
-
-            let obj: any = new Object;
-
-            for (let index = 0; index < refForm.current.length; index++) {
-                const id = refForm.current[index]?.id;
-                const value = refForm.current[index]?.value;
-
-                if (id === 'botao') break;
-                obj[id] = value;
-
-            }
-
-            api.post('/usuario/cadastrar', obj, {
-                headers: {
-                    'Authorization': 'Bearer ' + props.token
-                }
-            })
-                .then((res) => {
-
-                    router.push('/usuario')
-
-                }).catch((err) => {
-                    console.log(err)
-                })
-
-        } else {
-            refForm.current.classList.add('was-validated')
-        }
-
-    }, [])
-
-    const editForm = useCallback((e: FormEvent) => {
-        e.preventDefault();
-
-        if (refForm.current.checkValidity()) {
-            let obj: any = new Object;
-
-            for (let index = 0; index < refForm.current.length; index++) {
-                const id = refForm.current[index].id;
-                const value = refForm.current[index].value;
-
-                if(id === 'botao'
-                    || (id === 'senha' && value === '')
-                ) {
-                    break;
-                }
-                obj[id] = value;
-
-
-            }
-
-
-            api.put('/usuario/'+id, obj, {
-                headers: {
-                    'Authorization': 'Bearer ' + props.token
-                }
-            }).then((res) => {
-                router.push('/usuario')
-            })
-
-
-
-        }  else {
-            refForm.current.classList.add('was-validated')
-        }
-    }, [])
-
     return (
         <>
             <Menu
                 active="usuario"
-                token={props.token}
             >
-
-                <h1>Usuário - {
-                    !estaEditando
-                        ? 'Adicionar'
-                        : 'Editar'
-                }
-                </h1>
+                <h1>Usuário - </h1>
 
                 <form
                     className='row g-3 needs-validation'
-                    noValidate
                     ref={refForm}
                 >
                     <div
@@ -160,11 +65,8 @@ export default function Usuario(props: interfProps) {
                             className='form-control'
                             placeholder='Digite seu nome completo'
                             id="nome"
-                            required
+                            readOnly
                         />
-                        <div className='invalid-feedback'>
-                            Por favor digite seu nome completo.
-                        </div>
 
                     </div>
                     <div
@@ -187,7 +89,7 @@ export default function Usuario(props: interfProps) {
                                 className='form-control'
                                 placeholder='Digite o email'
                                 id="email"
-                                required
+                                readOnly
                             />
                             <div className='invalid-feedback'>
                                 Por favor digite seu email.
@@ -210,7 +112,7 @@ export default function Usuario(props: interfProps) {
                             className='form-control'
                             placeholder='Digite seu telefone'
                             id="telefone"
-                            //required
+                            readOnly
                         />
                         <div className='invalid-feedback'>
                             Por favor digite seu telefone.
@@ -233,7 +135,7 @@ export default function Usuario(props: interfProps) {
                             className='form-control'
                             placeholder='Digite seu cpf'
                             id="cpf"
-                        // required
+                            readOnly
                         />
                         <div className='invalid-feedback'>
                             Por favor digite seu cpf.
@@ -256,7 +158,7 @@ export default function Usuario(props: interfProps) {
                             className='form-control'
                             placeholder='Digite sua cidade'
                             id="cidade"
-                        // required
+                            readOnly
                         />
                     </div>
 
@@ -275,7 +177,7 @@ export default function Usuario(props: interfProps) {
                             className='form-control'
                             placeholder='Digite seu endereço'
                             id="endereco"
-                        // required
+                            readOnly
                         />
                     </div>
                     <div
@@ -293,7 +195,7 @@ export default function Usuario(props: interfProps) {
                             className='form-control'
                             placeholder='Digite seu bairro'
                             id="bairro"
-                        // required
+                            readOnly
                         />
                     </div>
                     <div
@@ -311,25 +213,8 @@ export default function Usuario(props: interfProps) {
                             className='form-control'
                             placeholder='Digite seu numero'
                             id="numero"
-                        // required
+                            readOnly
                         />
-                    </div>
-                    <div
-                        className='col-md-12'
-                    >
-                        <button
-                            className='btn btn-primary mt-3'
-                            type='submit'
-                            id='botao'
-                            onClick={(e) => {
-                                estaEditando ?
-                                    editForm(e)
-                                    :
-                                    submitForm(e)
-                            }}
-                        >
-                            Enviar
-                        </button>
                     </div>
                 </form>
             </Menu>

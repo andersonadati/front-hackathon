@@ -4,7 +4,6 @@ import { parseCookies } from 'nookies';
 import { useEffect, useState } from 'react';
 import { Menu } from '../../components/Menu';
 import api from '../../services/request';
-import { Model } from 'miragejs';
 
 interface interfProps {
     token?: string;
@@ -27,6 +26,8 @@ interface interfUsuario {
 function deletarUsuario() {
 
 }
+
+
 
 export default function Usuario(props: interfProps) {
 
@@ -93,6 +94,18 @@ export default function Usuario(props: interfProps) {
                                         <td>{element.nome}</td>
                                         <td>{element.bairro}</td>
                                         <td>
+                                            <button
+                                                className='btn btn-info'
+                                                onClick={() => {
+                                                    router.push(`/visualizar/` + element.id)
+
+                                                }}
+                                                style={{
+                                                    marginRight: 5
+                                                }}
+                                            >
+                                                Visualizar
+                                            </button>
                                             <button
                                                 className='btn btn-primary'
                                                 onClick={() => {

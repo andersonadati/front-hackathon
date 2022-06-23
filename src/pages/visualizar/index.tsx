@@ -1,150 +1,52 @@
-import { GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
-//import { parseCookies } from 'ookies';
-import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
+import Head from 'next/head';
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react';
 import { Menu } from '../../components/Menu';
 import api from '../../services/request';
 
-interface interfProps {
-    token?: string;
+interface interfUsuario {
+    bairro?: string,
+    cpf?: string,
+    email: string,
+    endereco?: string,
+    id: number,
+    nome: string,
+    numero?: string,
+    telefone: string,
+    tipo: string,
 }
 
-export default function Usuario(props: interfProps) {
+export default function Visualizar() {
 
     const router = useRouter();
 
-    const refForm = useRef<any>();
+    const [usuarios, setUsuarios] = useState<Array<interfUsuario>>([]);
 
-    const { id } = router.query;
-
-    const [estaEditando, setEstaEditando] = useState(false);
 
     useEffect(() => {
-        const idParam = Number(id);
-        //console.log(idParam)
 
+        //provavelmente tera uma rota para trazer os dados do usuario e as pesquisas desse usuario junto
+        api.get('/visualizar', {
 
-        if (Number.isInteger(idParam)) {
+        })
+            .then((res) => {
 
+                setUsuarios(res.data)
 
-
-            api.get('/usuario/' + idParam, {
-                headers: {
-                    'Authorization': 'Bearer ' + props.token
-                }
-            }).then((res) => {
-                if (res.data) {
-
-
-                    setEstaEditando(true);
-
-                    refForm.current['nome'].value = res.data.nome
-                    refForm.current['email'].value = res.data.email
-                    refForm.current['telefone'].value = res.data.telefone
-                    refForm.current['cidade'].value = res.data.cidade
-                    refForm.current['cpf'].value = res.data?.cpf || ''
-                    refForm.current['endereco'].value = res.data?.endereco || ''
-                    refForm.current['bairro'].value = res.data?.bairro || ''
-                    refForm.current['numero'].value = res.data?.numero || ''
-
-                }
             }).catch((erro) => {
                 console.log(erro)
             })
-        }
 
-    }, [id])
-
-    const submitForm = useCallback((e: FormEvent) => {
-        e.preventDefault();
-
-        if (refForm.current.checkValidity()) {
-
-            let obj: any = new Object;
-
-            for (let index = 0; index < refForm.current.length; index++) {
-                const id = refForm.current[index]?.id;
-                const value = refForm.current[index]?.value;
-
-                if (id === 'botao') break;
-                obj[id] = value;
-
-            }
-
-            api.post('/usuario/cadastrar', obj, {
-                headers: {
-                    'Authorization': 'Bearer ' + props.token
-                }
-            })
-                .then((res) => {
-
-                    router.push('/usuario')
-
-                }).catch((err) => {
-                    console.log(err)
-                })
-
-        } else {
-            refForm.current.classList.add('was-validated')
-        }
-
-    }, [])
-
-    const editForm = useCallback((e: FormEvent) => {
-        e.preventDefault();
-
-        if (refForm.current.checkValidity()) {
-            let obj: any = new Object;
-
-            for (let index = 0; index < refForm.current.length; index++) {
-                const id = refForm.current[index].id;
-                const value = refForm.current[index].value;
-
-                if(id === 'botao'
-                    || (id === 'senha' && value === '')
-                ) {
-                    break;
-                }
-                obj[id] = value;
-
-
-            }
-
-
-            api.put('/usuario/'+id, obj, {
-                headers: {
-                    'Authorization': 'Bearer ' + props.token
-                }
-            }).then((res) => {
-                router.push('/usuario')
-            })
-
-
-
-        }  else {
-            refForm.current.classList.add('was-validated')
-        }
     }, [])
 
     return (
         <>
             <Menu
                 active="usuario"
-                token={props.token}
             >
-
-                <h1>Usuário - {
-                    !estaEditando
-                        ? 'Adicionar'
-                        : 'Editar'
-                }
+                <h1>Usuário -
                 </h1>
 
-                <form
-                    className='row g-3 needs-validation'
-                    noValidate
-                    ref={refForm}
-                >
                     <div
                         className='col-md-6'
                     >
@@ -229,7 +131,7 @@ export default function Usuario(props: interfProps) {
                         </label>
 
                         <input
-                            type='string'
+                            type='number'
                             className='form-control'
                             placeholder='Digite seu cpf'
                             id="cpf"
@@ -314,25 +216,7 @@ export default function Usuario(props: interfProps) {
                         // required
                         />
                     </div>
-                    <div
-                        className='col-md-12'
-                    >
-                        <button
-                            className='btn btn-primary mt-3'
-                            type='submit'
-                            id='botao'
-                            onClick={(e) => {
-                                estaEditando ?
-                                    editForm(e)
-                                    :
-                                    submitForm(e)
-                            }}
-                        >
-                            Enviar
-                        </button>
-                    </div>
-                </form>
             </Menu>
         </>
-    )
+    );
 }

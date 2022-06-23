@@ -4,9 +4,6 @@ import { useEffect, useState } from 'react';
 import { Menu } from '../../components/Menu';
 import api from '../../services/request';
 
-interface interfProps {
-    token?: string;
-}
 
 interface interfPesquisa {
     id: number,
@@ -18,7 +15,7 @@ function deletarPesquisa() {
     return;
 }
 
-export default function Pesquisa(props: interfProps) {
+export default function Pesquisa() {
 
     const router = useRouter();
 
@@ -29,9 +26,6 @@ export default function Pesquisa(props: interfProps) {
 
         api.get('/pesquisa', {
             // headers (cabeçalhos)
-            headers: {
-                'Authorization': 'Bearer ' + props.token
-            }
         })
             .then((res) => {
 
@@ -51,7 +45,6 @@ export default function Pesquisa(props: interfProps) {
 
             <Menu
                 active="usuario"
-                token={props.token}
             >
 
                 <>

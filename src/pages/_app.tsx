@@ -1,10 +1,16 @@
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './../styles/styles.css';
 import Head from 'next/head'
 import { createServer, Model } from 'miragejs';
+import NProgress from 'nprogress';
+import { Router } from 'next/router'
 
+Router.events.on("routeChangeStart", (url) => {
+    NProgress.start();
+});
 
+Router.events.on("routeChangeComplete", () => NProgress.done());
+Router.events.on("routeChangeError", () => NProgress.done());
 createServer({
     models: {
         usuarios: Model,
@@ -87,6 +93,15 @@ createServer({
             return { message: 'deletado com sucesso.'}
         })
 
+        //
+
+        this.get('/visualizar/:id', (schema, request) => {
+            const id = request.params.id
+            console.log(id)
+            return schema.db.usuarios.findBy({id})
+
+        })
+
         this.namespace = "";
         this.passthrough((request) => {
             if (
@@ -103,6 +118,8 @@ function MyApp({ Component, pageProps }) {
     return (
         <>
         <Head>
+            <script src='nprogress.js'></script>
+            <link rel='stylesheet' href='nprogress.css'/>   
             <title>My new cool app</title>
         </Head>
 
