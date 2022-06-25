@@ -28,7 +28,7 @@ export default function Usuario(props: interfProps) {
 
 
 
-            api.get('/usuario/' + idParam, {
+            api.get('/users/' + idParam, {
                 headers: {
                     'Authorization': 'Bearer ' + props.token
                 }
@@ -71,15 +71,13 @@ export default function Usuario(props: interfProps) {
 
             }
 
-            api.post('/usuario/cadastrar', obj, {
+            api.post('/users', obj, {
                 headers: {
                     'Authorization': 'Bearer ' + props.token
                 }
             })
                 .then((res) => {
-
                     router.push('/usuario')
-
                 }).catch((err) => {
                     console.log(err)
                 })
@@ -111,7 +109,7 @@ export default function Usuario(props: interfProps) {
             }
 
 
-            api.put('/usuario/'+id, obj, {
+            api.put('/users/'+id, obj, {
                 headers: {
                     'Authorization': 'Bearer ' + props.token
                 }
@@ -132,11 +130,10 @@ export default function Usuario(props: interfProps) {
                 active="usuario"
                 token={props.token}
             >
-
-                <h1>Usuário - {
+                <h1>{
                     !estaEditando
-                        ? 'Adicionar'
-                        : 'Editar'
+                        ? 'Adicionar Usuário'
+                        : 'Editar Usuário'
                 }
                 </h1>
 
@@ -328,7 +325,12 @@ export default function Usuario(props: interfProps) {
                                     submitForm(e)
                             }}
                         >
-                            Enviar
+                            {
+                                estaEditando ?
+                                    'Salvar'
+                                    :
+                                    'Enviar'
+                            }
                         </button>
                     </div>
                 </form>

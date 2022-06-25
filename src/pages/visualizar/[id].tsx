@@ -16,7 +16,7 @@ export default function Visualizar() {
 
         if (Number.isInteger(idParam)) {
 
-            api.get('/visualizar/' + idParam, {
+            api.get('/users/' + idParam, {
 
             }).then((res) => {
                 console.log("usuario : " + res.data)
@@ -44,7 +44,7 @@ export default function Visualizar() {
             <Menu
                 active="usuario"
             >
-                <h1>Usuário - </h1>
+                <h1>Dados do usuário</h1>
 
                 <form
                     className='row g-3 needs-validation'

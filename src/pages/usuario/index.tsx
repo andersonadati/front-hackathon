@@ -1,6 +1,4 @@
-import Head from 'next/head';
-import { useRouter } from 'next/router'
-import { parseCookies } from 'nookies';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { Menu } from '../../components/Menu';
 import api from '../../services/request';
@@ -18,17 +16,8 @@ interface interfUsuario {
     nome: string,
     numero?: string,
     telefone: string,
-    tipo: string,
+    tipo: number,
 }
-
-
-
-function deletarUsuario() {
-
-}
-
-
-
 export default function Usuario(props: interfProps) {
 
     const router = useRouter();
@@ -38,11 +27,7 @@ export default function Usuario(props: interfProps) {
     useEffect(() => {
 
 
-        api.get('/usuario', {
-            // headers (cabeçalhos)
-            headers: {
-                'Authorization': 'Bearer ' + props.token
-            }
+        api.get('/users', {
         })
             .then((res) => {
 
@@ -54,12 +39,25 @@ export default function Usuario(props: interfProps) {
 
     }, [])
 
+    function deletarUsuario(id) {
+        api.delete('users/' + id, {
+        })
+            .then((res) => {
+            }).catch((erro) => {
+                console.log(erro)
+            })
+
+        api.get('/users', {
+        })
+            .then((res) => {
+                setUsuarios(res.data)
+            }).catch((erro) => {
+                console.log(erro)
+            })
+    }
+
     return (
         <>
-            <Head>
-                <title>Usuarios</title>
-            </Head>
-
             <Menu
                 active="usuario"
                 token={props.token}
@@ -92,7 +90,7 @@ export default function Usuario(props: interfProps) {
                                     <tr key={element.id}>
                                         <td>{element.id}</td>
                                         <td>{element.nome}</td>
-                                        <td>{element.bairro}</td>
+                                        <td>{element.email}</td>
                                         <td>
                                             <button
                                                 className='btn btn-info'
@@ -109,9 +107,7 @@ export default function Usuario(props: interfProps) {
                                             <button
                                                 className='btn btn-primary'
                                                 onClick={() => {
-                                                    // router.push('/usuario/' + element.id)
                                                     router.push(`/usuario/` + element.id)
-
                                                 }}
                                                 style={{
                                                     marginRight: 5
@@ -121,7 +117,7 @@ export default function Usuario(props: interfProps) {
                                             </button>
                                             <button
                                                 className='btn btn-danger'
-                                                onClick={() => {deletarUsuario()}}
+                                                onClick={() => {deletarUsuario(element.id)}}
                                             >
                                                 Excluir
                                             </button>

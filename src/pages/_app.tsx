@@ -14,17 +14,32 @@ Router.events.on("routeChangeError", () => NProgress.done());
 createServer({
     models: {
         usuarios: Model,
-        pesquisas: Model
+        search: Model,
+        questions: Model,
+        alternatives: Model
     },
     routes() {
         this.namespace = 'apimirage';
 
-        this.get('/usuario', (schema, request) => {
+        this.post('/users', (schema, resquest) => {
+            const data = JSON.parse(resquest.requestBody);
+
+            return schema.db.usuarios.insert(data);
+        })
+
+        this.get('/users', (schema, request) => {
             return schema.db.usuarios
 
         })
 
-        this.get('/usuario/:id', (schema, request) => {
+        this.put('/users/:id', (schema, request) => {
+            const data = JSON.parse(request.requestBody);
+            const id = request.params.id
+
+            return schema.db.usuarios.update(id, data);
+        })
+
+        this.get('/users/:id', (schema, request) => {
             const data = JSON.parse(request.requestBody);
             const id = request.params.id
 
@@ -33,21 +48,7 @@ createServer({
 
         })
 
-        this.post('/usuario/cadastrar', (schema, resquest) => {
-            const data = JSON.parse(resquest.requestBody);
-
-            return schema.db.usuarios.insert(data);
-        })
-
-        this.put('/usuario/:id', (schema, request) => {
-            const data = JSON.parse(request.requestBody);
-            const id = request.params.id
-
-            return schema.db.usuarios.update(id, data);
-        })
-
-
-        this.delete('/usuario/deletar/:id', (schema, request) => {
+        this.delete('users/:id', (schema, request) => {
             const id = request.params.id
 
             schema.db.usuarios.remove(id);
@@ -55,52 +56,82 @@ createServer({
             return { message: 'deletado com sucesso.'}
         })
 
-        //
+        //------------------------------------------------
 
-        this.get('/pesquisa', (schema, request) => {
-            return schema.db.pesquisas
-
-        })
-
-        this.get('/pesquisa/:id', (schema, request) => {
-            const data = JSON.parse(request.requestBody);
-            const id = request.params.id
-
-
-            return schema.db.pesquisas.findBy({id})
-
-        })
-
-        this.post('/pesquisa/cadastrar', (schema, resquest) => {
+        this.post('/search', (schema, resquest) => {
             const data = JSON.parse(resquest.requestBody);
 
-            return schema.db.pesquisas.insert(data);
+            return schema.db.search.insert(data);
         })
 
-        this.put('/pesquisa/:id', (schema, request) => {
+        this.get('/search', (schema, request) => {
+            return schema.db.search
+
+        })
+
+        this.put('/search/:id', (schema, request) => {
             const data = JSON.parse(request.requestBody);
             const id = request.params.id
 
-            return schema.db.pesquisas.update(id, data);
+            return schema.db.search.update(id, data);
         })
 
-
-        this.delete('/pesquisa/deletar/:id', (schema, request) => {
+        this.get('/search/:id', (schema, request) => {
+            const data = JSON.parse(request.requestBody);
             const id = request.params.id
 
-            schema.db.pesquisas.remove(id);
+
+            return schema.db.search.findBy({id})
+
+        })
+
+        this.delete('/search/:id', (schema, request) => {
+            const id = request.params.id
+
+            schema.db.search.remove(id);
 
             return { message: 'deletado com sucesso.'}
         })
 
-        //
+        //---------------------------------------------
 
-        this.get('/visualizar/:id', (schema, request) => {
-            const id = request.params.id
-            console.log(id)
-            return schema.db.usuarios.findBy({id})
+        this.post('/questions', (schema, resquest) => {
+            const data = JSON.parse(resquest.requestBody);
+
+            return schema.db.questions.insert(data);
+        })
+
+        this.get('/questions', (schema, request) => {
+            return schema.db.questions
 
         })
+
+        this.put('/questions/:id', (schema, request) => {
+            const data = JSON.parse(request.requestBody);
+            const id = request.params.id
+
+            return schema.db.questions.update(id, data);
+        })
+
+        this.get('/questions/:id', (schema, request) => {
+            const data = JSON.parse(request.requestBody);
+            const id = request.params.id
+
+
+            return schema.db.questions.findBy({id})
+
+        })
+
+        this.delete('/questions/:id', (schema, request) => {
+            const id = request.params.id
+
+            schema.db.questions.remove(id);
+
+            return { message: 'deletado com sucesso.'}
+        })
+
+        //----------------------------------------------
+
 
         this.namespace = "";
         this.passthrough((request) => {
@@ -120,7 +151,7 @@ function MyApp({ Component, pageProps }) {
         <Head>
             <script src='nprogress.js'></script>
             <link rel='stylesheet' href='nprogress.css'/>   
-            <title>My new cool app</title>
+            <title>On-Search</title>
         </Head>
 
             <Component {...pageProps} />
