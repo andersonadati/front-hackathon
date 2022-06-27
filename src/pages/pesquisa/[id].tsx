@@ -1,4 +1,3 @@
-import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 //import { parseCookies } from 'ookies';
 import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
@@ -9,7 +8,7 @@ interface interfProps {
     token?: string;
 }
 
-export default function Pesquisa(props: interfProps) {
+export default function Question(props: interfProps) {
 
     const router = useRouter();
 
@@ -26,21 +25,16 @@ export default function Pesquisa(props: interfProps) {
 
         if (Number.isInteger(idParam)) {
 
-
-
-            api.get('/pesquisa/' + idParam, {
+            api.get('/questions/' + idParam, {
                 headers: {
-                    'Authorization': 'Bearer ' + props.token
+                    'Authorization': 'Bearer '
                 }
             }).then((res) => {
-                if (res.data) {
-
+                if (res.data.data) {
 
                     setEstaEditando(true);
 
-                    refForm.current['nomePesquisa'].value = res.data.nomePesquisa
-                    refForm.current['pergunta'].value = res.data.pergunta
-
+                    refForm.current['description'].value = res.data.data.description
                 }
             }).catch((erro) => {
                 console.log(erro)
@@ -65,15 +59,13 @@ export default function Pesquisa(props: interfProps) {
 
             }
 
-            api.post('/pesquisa/cadastrar', obj, {
-                headers: {
-                    'Authorization': 'Bearer ' + props.token
-                }
+            //console.log(obj)
+
+            api.post('/questions', obj, {
             })
                 .then((res) => {
-
-                    router.push('/pesquisa')
-
+                    //console.log(res)
+                    router.push('/usuario')
                 }).catch((err) => {
                     console.log(err)
                 })
@@ -103,14 +95,14 @@ export default function Pesquisa(props: interfProps) {
 
 
             }
+            console.log(obj)
 
 
-            api.put('/pesquisa/'+id, obj, {
-                headers: {
-                    'Authorization': 'Bearer ' + props.token
-                }
+            api.put('/questions/'+id, obj, {
             }).then((res) => {
                 router.push('/pesquisa')
+            }).catch((err) => {
+                console.log(err)
             })
 
 
@@ -127,10 +119,10 @@ export default function Pesquisa(props: interfProps) {
                 token={props.token}
             >
 
-                <h1>Pesquisa - {
+                <h1> {
                     !estaEditando
-                        ? 'Adicionar'
-                        : 'Editar'
+                        ? 'Adicionar Pesquisa'
+                        : 'Editar Pesquisa'
                 }
                 </h1>
 
@@ -143,49 +135,28 @@ export default function Pesquisa(props: interfProps) {
                         className='col-md-6'
                     >
                         <label
-                            htmlFor='nomePesquisa'
+                            htmlFor='description'
                             className='form-label'
                         >
-                            Pesquisa
+                            Digite a pegunta
                         </label>
-
+                        
                         <input
                             type='text'
                             className='form-control'
-                            placeholder='Digite o nome da pesquisa'
-                            id="nomePesquisa"
+                            placeholder='Digite a pergunta!'
+                            id="description"
                             required
                         />
                         <div className='invalid-feedback'>
-                            Nome da pesquisa
+                            Digite a pergunta!
                         </div>
-
                     </div>
-                    <div
-                        className='col-md-6'
-                    >
-                        <label
-                            htmlFor='pergunta'
-                            className='form-label'
-                        >
-                            Pergunta 1
-                        </label>
+                    <br></br>
 
-                        <input
-                            type='text'
-                            className='form-control'
-                            placeholder='Digite a pergunta'
-                            id="pergunta"
-                            required
-                        />
-                        <div className='invalid-feedback'>
-                            Digite a pergunta
-                        </div>
-
-                    </div>
-                    <div>
+                    <div className='d-flex'>
                         <button
-                            className='btn btn-primary mt-3'
+                            className='btn btn-success'
                             type='submit'
                             id='botao'
                             onClick={(e) => {
@@ -195,7 +166,7 @@ export default function Pesquisa(props: interfProps) {
                                     submitForm(e)
                             }}
                         >
-                            Enviar
+                            Salvar
                         </button>
                     </div>
                 </form>

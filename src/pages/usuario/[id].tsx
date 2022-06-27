@@ -26,26 +26,24 @@ export default function Usuario(props: interfProps) {
 
         if (Number.isInteger(idParam)) {
 
-
-
             api.get('/users/' + idParam, {
                 headers: {
-                    'Authorization': 'Bearer ' + props.token
+                    'Authorization': 'Bearer '
                 }
             }).then((res) => {
-                if (res.data) {
+                if (res.data.data) {
 
 
                     setEstaEditando(true);
 
-                    refForm.current['nome'].value = res.data.nome
-                    refForm.current['email'].value = res.data.email
-                    refForm.current['telefone'].value = res.data.telefone
-                    refForm.current['cidade'].value = res.data.cidade
-                    refForm.current['cpf'].value = res.data?.cpf || ''
-                    refForm.current['endereco'].value = res.data?.endereco || ''
-                    refForm.current['bairro'].value = res.data?.bairro || ''
-                    refForm.current['numero'].value = res.data?.numero || ''
+                    refForm.current['name'].value = res.data.data.name
+                    refForm.current['email'].value = res.data.data.email
+                    refForm.current['phone'].value = res.data.data.phone
+                    refForm.current['city_id'].value = res.data.data.city_id
+                    refForm.current['cpf'].value = res.data.data.cpf || ''
+                    refForm.current['address'].value = res.data.data.address || ''
+                    refForm.current['neighborhood'].value = res.data.data.neighborhood || ''
+                    refForm.current['number'].value = res.data.data.number || ''
 
                 }
             }).catch((erro) => {
@@ -71,12 +69,12 @@ export default function Usuario(props: interfProps) {
 
             }
 
+            console.log(obj)
+
             api.post('/users', obj, {
-                headers: {
-                    'Authorization': 'Bearer ' + props.token
-                }
             })
                 .then((res) => {
+                    //console.log(res)
                     router.push('/usuario')
                 }).catch((err) => {
                     console.log(err)
@@ -107,14 +105,14 @@ export default function Usuario(props: interfProps) {
 
 
             }
+            console.log(obj)
 
 
             api.put('/users/'+id, obj, {
-                headers: {
-                    'Authorization': 'Bearer ' + props.token
-                }
             }).then((res) => {
                 router.push('/usuario')
+            }).catch((err) => {
+                console.log(err)
             })
 
 
@@ -146,7 +144,7 @@ export default function Usuario(props: interfProps) {
                         className='col-md-6'
                     >
                         <label
-                            htmlFor='nome'
+                            htmlFor='name'
                             className='form-label'
                         >
                             Nome
@@ -156,7 +154,7 @@ export default function Usuario(props: interfProps) {
                             type='text'
                             className='form-control'
                             placeholder='Digite seu nome completo'
-                            id="nome"
+                            id="name"
                             required
                         />
                         <div className='invalid-feedback'>
@@ -196,7 +194,7 @@ export default function Usuario(props: interfProps) {
                         className='col-md-6'
                     >
                         <label
-                            htmlFor='telefone'
+                            htmlFor='phone'
                             className='form-label'
                         >
                             Telefone
@@ -206,7 +204,7 @@ export default function Usuario(props: interfProps) {
                             type='tel'
                             className='form-control'
                             placeholder='Digite seu telefone'
-                            id="telefone"
+                            id="phone"
                             //required
                         />
                         <div className='invalid-feedback'>
@@ -242,26 +240,26 @@ export default function Usuario(props: interfProps) {
                         className='col-md-6'
                     >
                         <label
-                            htmlFor='cidade'
+                            htmlFor='city_id'
                             className='form-label'
                         >
                             Cidade
                         </label>
-
                         <input
                             type='text'
                             className='form-control'
-                            placeholder='Digite sua cidade'
-                            id="cidade"
+                            placeholder='Digite a cidade'
+                            id="city_id"
                         // required
                         />
+                        
                     </div>
 
                     <div
                         className='col-md-6'
                     >
                         <label
-                            htmlFor='endereco'
+                            htmlFor='address'
                             className='form-label'
                         >
                             Endereço
@@ -271,7 +269,7 @@ export default function Usuario(props: interfProps) {
                             type='text'
                             className='form-control'
                             placeholder='Digite seu endereço'
-                            id="endereco"
+                            id="address"
                         // required
                         />
                     </div>
@@ -279,7 +277,7 @@ export default function Usuario(props: interfProps) {
                         className='col-md-6'
                     >
                         <label
-                            htmlFor='bairro'
+                            htmlFor='neighborhood'
                             className='form-label'
                         >
                             Bairro
@@ -289,7 +287,7 @@ export default function Usuario(props: interfProps) {
                             type='text'
                             className='form-control'
                             placeholder='Digite seu bairro'
-                            id="bairro"
+                            id="neighborhood"
                         // required
                         />
                     </div>
@@ -297,7 +295,7 @@ export default function Usuario(props: interfProps) {
                         className='col-md-6'
                     >
                         <label
-                            htmlFor='numero'
+                            htmlFor='number'
                             className='form-label'
                         >
                             Numero
@@ -307,7 +305,7 @@ export default function Usuario(props: interfProps) {
                             type='text'
                             className='form-control'
                             placeholder='Digite seu numero'
-                            id="numero"
+                            id="number"
                         // required
                         />
                     </div>

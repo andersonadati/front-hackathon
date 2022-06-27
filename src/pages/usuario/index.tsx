@@ -8,15 +8,19 @@ interface interfProps {
 }
 
 interface interfUsuario {
-    bairro?: string,
+    neighborhood?: string,
     cpf?: string,
     email: string,
-    endereco?: string,
+    email_verified_at: Date,
+    address?: string,
     id: number,
-    nome: string,
-    numero?: string,
-    telefone: string,
-    tipo: number,
+    name: string,
+    number?: string,
+    remember_token: string
+    created_at: Date,
+    updated_at: Date,
+    phone: string,
+    city_id:number
 }
 export default function Usuario(props: interfProps) {
 
@@ -30,11 +34,12 @@ export default function Usuario(props: interfProps) {
         api.get('/users', {
         })
             .then((res) => {
-
-                setUsuarios(res.data)
-
-            }).catch((erro) => {
-                console.log(erro)
+                console.log(res)
+                setUsuarios(res.data.data)
+            }).catch((error) => {
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
             })
 
     }, [])
@@ -85,11 +90,11 @@ export default function Usuario(props: interfProps) {
                     </thead>
                     <tbody>
                         {
-                            usuarios.map((element, index) => {
+                            Array.from(usuarios).map((element, index) => {
                                 return (
                                     <tr key={element.id}>
                                         <td>{element.id}</td>
-                                        <td>{element.nome}</td>
+                                        <td>{element.name}</td>
                                         <td>{element.email}</td>
                                         <td>
                                             <button
@@ -102,7 +107,7 @@ export default function Usuario(props: interfProps) {
                                                     marginRight: 5
                                                 }}
                                             >
-                                                Visualizar
+                                                Visualizar Dados
                                             </button>
                                             <button
                                                 className='btn btn-primary'

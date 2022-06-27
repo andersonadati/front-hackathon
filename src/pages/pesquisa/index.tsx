@@ -7,11 +7,10 @@ import api from '../../services/request';
 
 interface interfPesquisa {
     id: number,
-    nomePesquisa: string,
-    pergunta: string,
+    description: string,
 }
 
-function deletarPesquisa() {
+function deletarPesquisa(id: number) {
     return;
 }
 
@@ -24,7 +23,7 @@ export default function Pesquisa() {
     useEffect(() => {
 
 
-        api.get('/pesquisa', {
+        api.get('/questions', {
             // headers (cabeçalhos)
         })
             .then((res) => {
@@ -63,7 +62,6 @@ export default function Pesquisa() {
                         <tr>
                             <th>Id</th>
                             <th>Nome</th>
-                            <th>Perguntas</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
@@ -73,8 +71,7 @@ export default function Pesquisa() {
                                 return (
                                     <tr key={element.id}>
                                         <td>{element.id}</td>
-                                        <td>{element.nomePesquisa}</td>
-                                        <td>{element.pergunta}</td>
+                                        <td>{element.description}</td>
                                         <td>
                                             <button
                                                 className='btn btn-primary'
@@ -90,7 +87,7 @@ export default function Pesquisa() {
                                             </button>
                                             <button
                                                 className='btn btn-danger'
-                                                onClick={() => {deletarPesquisa()}}
+                                                onClick={() => {deletarPesquisa(element.id)}}
                                             >
                                                 Excluir
                                             </button>

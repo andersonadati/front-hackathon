@@ -5,15 +5,19 @@ import { Menu } from '../../components/Menu';
 import api from '../../services/request';
 
 interface interfUsuario {
-    bairro?: string,
+    neighborhood?: string,
     cpf?: string,
     email: string,
-    endereco?: string,
+    email_verified_at: Date,
+    address?: string,
     id: number,
-    nome: string,
-    numero?: string,
-    telefone: string,
-    tipo: string,
+    name: string,
+    number?: string,
+    remember_token: string
+    created_at: Date,
+    updated_at: Date,
+    phone: string,
+    cityid:number
 }
 
 export default function Visualizar() {
@@ -31,12 +35,11 @@ export default function Visualizar() {
         })
             .then((res) => {
 
-                setUsuarios(res.data)
+                setUsuarios(res.data.data)
 
             }).catch((erro) => {
                 console.log(erro)
             })
-
     }, [])
 
     return (
@@ -44,14 +47,14 @@ export default function Visualizar() {
             <Menu
                 active="usuario"
             >
-                <h1>Usuário -
+                <h1>Usuário
                 </h1>
 
                     <div
                         className='col-md-6'
                     >
                         <label
-                            htmlFor='nome'
+                            htmlFor='name'
                             className='form-label'
                         >
                             Nome
@@ -61,7 +64,7 @@ export default function Visualizar() {
                             type='text'
                             className='form-control'
                             placeholder='Digite seu nome completo'
-                            id="nome"
+                            id="name"
                             required
                         />
                         <div className='invalid-feedback'>
@@ -101,7 +104,7 @@ export default function Visualizar() {
                         className='col-md-6'
                     >
                         <label
-                            htmlFor='telefone'
+                            htmlFor='phone'
                             className='form-label'
                         >
                             Telefone
@@ -111,7 +114,7 @@ export default function Visualizar() {
                             type='tel'
                             className='form-control'
                             placeholder='Digite seu telefone'
-                            id="telefone"
+                            id="phone"
                             //required
                         />
                         <div className='invalid-feedback'>
@@ -147,7 +150,7 @@ export default function Visualizar() {
                         className='col-md-6'
                     >
                         <label
-                            htmlFor='cidade'
+                            htmlFor='cityid'
                             className='form-label'
                         >
                             Cidade
@@ -157,7 +160,7 @@ export default function Visualizar() {
                             type='text'
                             className='form-control'
                             placeholder='Digite sua cidade'
-                            id="cidade"
+                            id="cityid"
                         // required
                         />
                     </div>
@@ -166,7 +169,7 @@ export default function Visualizar() {
                         className='col-md-6'
                     >
                         <label
-                            htmlFor='endereco'
+                            htmlFor='address'
                             className='form-label'
                         >
                             Endereço
@@ -176,7 +179,7 @@ export default function Visualizar() {
                             type='text'
                             className='form-control'
                             placeholder='Digite seu endereço'
-                            id="endereco"
+                            id="address"
                         // required
                         />
                     </div>
@@ -184,7 +187,7 @@ export default function Visualizar() {
                         className='col-md-6'
                     >
                         <label
-                            htmlFor='bairro'
+                            htmlFor='neighborhood'
                             className='form-label'
                         >
                             Bairro
@@ -194,7 +197,7 @@ export default function Visualizar() {
                             type='text'
                             className='form-control'
                             placeholder='Digite seu bairro'
-                            id="bairro"
+                            id="neighborhood"
                         // required
                         />
                     </div>
@@ -202,7 +205,7 @@ export default function Visualizar() {
                         className='col-md-6'
                     >
                         <label
-                            htmlFor='numero'
+                            htmlFor='number'
                             className='form-label'
                         >
                             Numero
@@ -212,7 +215,7 @@ export default function Visualizar() {
                             type='text'
                             className='form-control'
                             placeholder='Digite seu numero'
-                            id="numero"
+                            id="number"
                         // required
                         />
                     </div>

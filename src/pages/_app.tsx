@@ -1,7 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './../styles/styles.css';
 import Head from 'next/head'
-import { createServer, Model } from 'miragejs';
 import NProgress from 'nprogress';
 import { Router } from 'next/router'
 
@@ -11,6 +10,7 @@ Router.events.on("routeChangeStart", (url) => {
 
 Router.events.on("routeChangeComplete", () => NProgress.done());
 Router.events.on("routeChangeError", () => NProgress.done());
+/*
 createServer({
     models: {
         usuarios: Model,
@@ -144,6 +144,7 @@ createServer({
         this.passthrough();
     }
 })
+*/
 
 function MyApp({ Component, pageProps }) {
     return (

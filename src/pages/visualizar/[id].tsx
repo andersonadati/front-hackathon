@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Menu } from '../../components/Menu';
 import api from '../../services/request';
 
@@ -11,6 +11,8 @@ export default function Visualizar() {
 
     const { id } = router.query;
 
+    const [questions, setQuestions] = useState(false);
+
     useEffect(() => {
         const idParam = Number(id);
 
@@ -19,17 +21,17 @@ export default function Visualizar() {
             api.get('/users/' + idParam, {
 
             }).then((res) => {
-                console.log("usuario : " + res.data)
+                console.log(res.data.data)
                 if (res.data) {
 
-                    refForm.current['nome'].value = res.data.nome
-                    refForm.current['email'].value = res.data.email
-                    refForm.current['telefone'].value = res.data.telefone
-                    refForm.current['cidade'].value = res.data.cidade
-                    refForm.current['cpf'].value = res.data?.cpf || ''
-                    refForm.current['endereco'].value = res.data?.endereco || ''
-                    refForm.current['bairro'].value = res.data?.bairro || ''
-                    refForm.current['numero'].value = res.data?.numero || ''
+                    refForm.current['nome'].value = res.data.data.name
+                    refForm.current['email'].value = res.data.data.email
+                    refForm.current['telefone'].value = res.data.data.phone
+                    refForm.current['cidade'].value = res.data.data.city_id
+                    refForm.current['cpf'].value = res.data.data.cpf || ''
+                    refForm.current['endereco'].value = res.data.data.address || ''
+                    refForm.current['bairro'].value = res.data.data.neighborhood || ''
+                    refForm.current['numero'].value = res.data?.data.number || ''
 
                 }
             }).catch((erro) => {
