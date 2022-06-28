@@ -15,7 +15,8 @@ export const Menu = ({
 
     return (
         <>
-            <header
+        {/*
+        <header
                 className={"navbar navbar-dark " +
                     "sticky-top bg-dark flex-md-nowrap p-0 shadow"}
             >
@@ -27,11 +28,16 @@ export const Menu = ({
                     Pesquisa de satisfação
                 </a>
             </header>
+    
+        */
+        }
+            
 
             <div className="container-fluid">
                 <div className="row">
-                    <nav id="sidebarMenu" className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                    <nav id="sidebarMenu" className="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse">
                         <div className="position-sticky pt-3">
+                            <h1 className="titulo">On-Search</h1>
                             <ul className="nav flex-column">
                                 {
                                     <li
@@ -75,21 +81,6 @@ export const Menu = ({
                                         </Link>
                                     </li>
                                 }
-                                {
-                                    <li
-                                        className="nav-item"
-                                    >
-                                        <Link href={'/pesquisa/cadastrar'}>
-                                            <a
-                                                className={`nav-link ${active === 'usuario' && 'active'}`}
-
-                                            >
-                                                Cadastro de Pesquisa
-                                            </a>
-                                        </Link>
-                                    </li>
-                                }
-
                             </ul>
                         </div>
                     </nav>

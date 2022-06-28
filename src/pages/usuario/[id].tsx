@@ -69,8 +69,6 @@ export default function Usuario(props: interfProps) {
 
             }
 
-            console.log(obj)
-
             api.post('/users', obj, {
             })
                 .then((res) => {
@@ -89,37 +87,32 @@ export default function Usuario(props: interfProps) {
     const editForm = useCallback((e: FormEvent) => {
         e.preventDefault();
 
+        let obj: any = new Object;
         if (refForm.current.checkValidity()) {
-            let obj: any = new Object;
-
             for (let index = 0; index < refForm.current.length; index++) {
-                const id = refForm.current[index].id;
-                const value = refForm.current[index].value;
+                const id = refForm.current[index]?.id;
+                const value = refForm.current[index]?.value;
 
-                if(id === 'botao'
-                    || (id === 'senha' && value === '')
-                ) {
-                    break;
-                }
+                if (id === 'botao') break;
                 obj[id] = value;
 
-
             }
+
             console.log(obj)
 
-
             api.put('/users/'+id, obj, {
-            }).then((res) => {
-                router.push('/usuario')
-            }).catch((err) => {
-                console.log(err)
             })
+                .then((res) => {
+                    console.log(res)
+                    router.push('/usuario')
+                }).catch((err) => {
+                    console.log(err)
+                })
 
-
-
-        }  else {
+        } else {
             refForm.current.classList.add('was-validated')
         }
+
     }, [])
 
     return (
@@ -139,6 +132,7 @@ export default function Usuario(props: interfProps) {
                     className='row g-3 needs-validation'
                     noValidate
                     ref={refForm}
+                    method="POST"
                 >
                     <div
                         className='col-md-6'
@@ -313,7 +307,7 @@ export default function Usuario(props: interfProps) {
                         className='col-md-12'
                     >
                         <button
-                            className='btn btn-primary mt-3'
+                            className='btn btn-success mt-3'
                             type='submit'
                             id='botao'
                             onClick={(e) => {

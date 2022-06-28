@@ -95,12 +95,11 @@ export default function Question(props: interfProps) {
 
 
             }
-            console.log(obj)
 
 
             api.put('/questions/'+id, obj, {
             }).then((res) => {
-                router.push('/pesquisa')
+                router.push('/usuario')
             }).catch((err) => {
                 console.log(err)
             })

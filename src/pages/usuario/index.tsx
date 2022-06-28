@@ -45,17 +45,10 @@ export default function Usuario(props: interfProps) {
     }, [])
 
     function deletarUsuario(id) {
-        api.delete('users/' + id, {
+        api.delete('/users/' + id, {
         })
             .then((res) => {
-            }).catch((erro) => {
-                console.log(erro)
-            })
-
-        api.get('/users', {
-        })
-            .then((res) => {
-                setUsuarios(res.data)
+                router.reload()
             }).catch((erro) => {
                 console.log(erro)
             })
@@ -108,6 +101,18 @@ export default function Usuario(props: interfProps) {
                                                 }}
                                             >
                                                 Visualizar Dados
+                                            </button>
+                                            <button
+                                                className='btn btn-success'
+                                                onClick={() => {
+                                                    router.push(`/pesquisa/` + element.id)
+
+                                                }}
+                                                style={{
+                                                    marginRight: 5
+                                                }}
+                                            >
+                                                Cadastrar Pergunta
                                             </button>
                                             <button
                                                 className='btn btn-primary'

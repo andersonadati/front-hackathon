@@ -10,15 +10,21 @@ interface interfPesquisa {
     description: string,
 }
 
-function deletarPesquisa(id: number) {
-    return;
-}
-
 export default function Pesquisa() {
 
     const router = useRouter();
 
     const [pesquisas, setPesquisas] = useState<Array<interfPesquisa>>([]);
+
+    function deletarQuestion(id: number) {
+        api.delete('/questions/' + id, {
+        })
+            .then((res) => {
+                router.reload()
+            }).catch((erro) => {
+                console.log(erro)
+            })
+    }
 
     useEffect(() => {
 
@@ -87,7 +93,7 @@ export default function Pesquisa() {
                                             </button>
                                             <button
                                                 className='btn btn-danger'
-                                                onClick={() => {deletarPesquisa(element.id)}}
+                                                onClick={() => {deletarQuestion(element.id)}}
                                             >
                                                 Excluir
                                             </button>

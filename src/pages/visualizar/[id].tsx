@@ -1,7 +1,12 @@
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { Menu } from '../../components/Menu';
 import api from '../../services/request';
+
+interface interfQuestions {
+    id: number,
+    description: string
+}
 
 export default function Visualizar() {
 
@@ -11,7 +16,18 @@ export default function Visualizar() {
 
     const { id } = router.query;
 
-    const [questions, setQuestions] = useState(false);
+    const [questions, setQuestions] = useState<Array<interfQuestions>>([]);
+
+    function deletarPesquisa(id) {
+        api.delete('/questions/' + id, {
+        })
+            .then((res) => {
+                return router.reload();
+            }).catch((erro) => {
+                console.log(erro)
+            })
+        return;
+    }
 
     useEffect(() => {
         const idParam = Number(id);
@@ -19,9 +35,7 @@ export default function Visualizar() {
         if (Number.isInteger(idParam)) {
 
             api.get('/users/' + idParam, {
-
             }).then((res) => {
-                console.log(res.data.data)
                 if (res.data) {
 
                     refForm.current['nome'].value = res.data.data.name
@@ -39,7 +53,15 @@ export default function Visualizar() {
             })
         }
 
-    }, [id])
+        api.get('/questions', {
+        })
+            .then((res) => {
+                setQuestions(res.data)
+            }).catch((err) => {
+                console.log(err)
+            })
+
+    }, [])
 
     return (
         <>
@@ -218,6 +240,49 @@ export default function Visualizar() {
                             readOnly
                         />
                     </div>
+                    <h4>Perguntas Cadastradas</h4>
+                    <table
+                        className='table table-striped'
+                    >
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nome</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                questions.map((element, index) => {
+                                    return (
+                                        <tr key={element.id}>
+                                            <td>{element.id}</td>
+                                            <td>{element.description}</td>
+                                            <td>
+                                                <button
+                                                    className='btn btn-primary'
+                                                    onClick={() => {
+                                                        router.push(`/pesquisa/` + element.id)
+                                                    }}
+                                                    style={{
+                                                        marginRight: 5
+                                                    }}
+                                                >
+                                                    Editar
+                                                </button>
+                                                <button
+                                                    className='btn btn-danger'
+                                                    onClick={() => {deletarPesquisa(element.id)}}
+                                                >
+                                                    Excluir
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    )
+                                })
+                            }
+                        </tbody>
+                    </table>
                 </form>
             </Menu>
         </>
